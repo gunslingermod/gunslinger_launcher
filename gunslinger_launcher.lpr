@@ -55,6 +55,7 @@ const
   UPDATER_EXECUTABLE_NAME:string = 'CheckUpdates.exe';
   MOD_EXECUTABLE_DIR:string='bin\';
   MOD_EXECUTABLE_NAME:string = 'xrEngine.exe';
+  MOD_EXECUTABLE_PARAMS:string=' -no_staging';
   SILENT_KEY:string = 'silent';
 begin
   run_updater_string:='';
@@ -81,6 +82,8 @@ begin
   end;
 
   if length(run_mod_string)>0 then begin
+    run_mod_string:=run_mod_string+MOD_EXECUTABLE_PARAMS;
+
     FillMemory(@si, sizeof(si),0);
     FillMemory(@pi, sizeof(pi),0);
     si.cb:=sizeof(si);
