@@ -57,6 +57,7 @@ const
   MOD_EXECUTABLE_NAME:string = 'xrEngine.exe';
   MOD_EXECUTABLE_PARAMS:string=' -no_staging';
   SILENT_KEY:string = 'silent';
+  FAST_KEY:string = 'fast';
 begin
   run_updater_string:='';
   run_mod_string:='';
@@ -65,12 +66,12 @@ begin
   if not cfg.configuration_valid then begin
     res:=Application.MessageBox(PAnsiChar(LocalizeString('err_inconsistent')), PAnsiChar(LocalizeString('err_caption')), MB_ICONERROR or MB_YESNO);
     if res = IDYES then begin
-      run_updater_string:=UPDATER_EXECUTABLE_NAME;
+      run_updater_string:=UPDATER_EXECUTABLE_NAME+' '+FAST_KEY;
     end;
   end else if cfg.updates_present then begin;
     res:=Application.MessageBox(PAnsiChar(LocalizeString('info_updatefound')), PAnsiChar(LocalizeString('info_caption')), MB_ICONINFORMATION or MB_YESNO);
     if res = IDYES then begin
-      run_updater_string:=UPDATER_EXECUTABLE_NAME;
+      run_updater_string:=UPDATER_EXECUTABLE_NAME+' '+FAST_KEY;
     end else begin
       run_mod_string:=MOD_EXECUTABLE_NAME;
     end;
