@@ -7,7 +7,7 @@ uses
   IniFiles,
   windows,
   DateUtils,
-  Localizer;
+  Localizer, ask_form;
 
 type
 ConfigurationParams = record
@@ -69,8 +69,7 @@ begin
       run_updater_string:=UPDATER_EXECUTABLE_NAME+' '+FAST_KEY;
     end;
   end else if cfg.updates_present then begin;
-    res:=Application.MessageBox(PAnsiChar(LocalizeString('info_updatefound')), PAnsiChar(LocalizeString('info_caption')), MB_ICONINFORMATION or MB_YESNO);
-    if res = IDYES then begin
+    if AskUpdateNow() then begin
       run_updater_string:=UPDATER_EXECUTABLE_NAME+' '+FAST_KEY;
     end else begin
       run_mod_string:=MOD_EXECUTABLE_NAME;

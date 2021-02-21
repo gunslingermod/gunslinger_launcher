@@ -1,0 +1,67 @@
+object AskForm: TAskForm
+  Left = 360
+  Height = 126
+  Top = 396
+  Width = 423
+  BorderIcons = [biMinimize]
+  BorderStyle = bsToolWindow
+  Caption = 'Update is available'
+  ClientHeight = 126
+  ClientWidth = 423
+  OnCreate = FormCreate
+  Position = poScreenCenter
+  LCLVersion = '2.0.10.0'
+  object memo_details: TMemo
+    Left = 8
+    Height = 80
+    Top = 8
+    Width = 408
+    ReadOnly = True
+    ScrollBars = ssAutoVertical
+    TabOrder = 4
+  end
+  object btn_yes: TButton
+    Left = 8
+    Height = 25
+    Top = 96
+    Width = 96
+    Caption = 'btn_yes'
+    OnClick = btn_yesClick
+    TabOrder = 0
+  end
+  object btn_no: TToggleBox
+    Left = 112
+    Height = 25
+    Top = 96
+    Width = 96
+    Caption = 'btn_no'
+    OnChange = btn_noChange
+    TabOrder = 1
+  end
+  object btn_info: TButton
+    Left = 216
+    Height = 25
+    Top = 96
+    Width = 96
+    Caption = 'btn_info'
+    OnClick = btn_infoClick
+    TabOrder = 2
+  end
+  object btn_changelog: TButton
+    Left = 320
+    Height = 25
+    Top = 96
+    Width = 96
+    Caption = 'btn_changelog'
+    OnClick = btn_changelogClick
+    TabOrder = 3
+  end
+  object lbl_update_msg: TLabel
+    Left = 8
+    Height = 15
+    Top = 40
+    Width = 83
+    Caption = 'lbl_update_msg'
+    ParentColor = False
+  end
+end

@@ -21,6 +21,18 @@ begin
     result:=SelectLocalized('Ошибка!', 'Error!');
   end else if str = 'info_caption' then begin
     result:=SelectLocalized('Информация', 'Information');
+  end else if str = 'btn_yes_caption' then begin
+    result:=SelectLocalized('Да', 'Yes');
+  end else if str = 'btn_no_caption' then begin
+    result:=SelectLocalized('Нет', 'No');
+  end else if str = 'btn_info_caption' then begin
+    result:=SelectLocalized('Подробнее...', 'Info');
+  end else if str = 'btn_less_info_caption' then begin
+    result:=SelectLocalized('Скрыть детали', 'Hide details');
+  end else if str = 'btn_info_changelog' then begin
+    result:=SelectLocalized('История версий', 'Change log');
+  end else if str = 'components_to_update' then begin
+    result:=SelectLocalized('Доступно обновление для следующих компонентов:', 'An update is available for the following components:');
   end;
 end;
 
