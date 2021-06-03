@@ -48,6 +48,7 @@ var
   run_updater_string:string;
   run_mod_string:string;
   res:integer;
+  decision:TUserDecision;
 
   pi:TPROCESSINFORMATION;
   si:TSTARTUPINFO;
@@ -69,9 +70,10 @@ begin
       run_updater_string:=UPDATER_EXECUTABLE_NAME+' '+FAST_KEY;
     end;
   end else if cfg.updates_present then begin;
-    if AskUpdateNow() then begin
+    decision:=AskUpdateNow();
+    if decision = RUN_UPDATE then begin
       run_updater_string:=UPDATER_EXECUTABLE_NAME+' '+FAST_KEY;
-    end else begin
+    end else if decision = RUN_GAME then begin
       run_mod_string:=MOD_EXECUTABLE_NAME;
     end;
   end else begin

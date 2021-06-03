@@ -9,6 +9,7 @@ uses
 
 type
 
+  TUserDecision = (RUN_UPDATE, RUN_GAME, DO_NOTHING);
   { TAskForm }
 
   TAskForm = class(TForm)
@@ -25,19 +26,19 @@ type
     procedure FormCreate(Sender: TObject);
   private
     _update_required:boolean;
+    _show_changelist:boolean;
   public
-    function GetUserUpdateDecision():boolean;
+    function GetUserUpdateDecision():TUserDecision;
     procedure FillDetails();
-
   end;
 
-  function AskUpdateNow():boolean;
+  function AskUpdateNow():TUserDecision;
 
 
 implementation
 uses Localizer, windows, IniFiles;
 
-function AskUpdateNow(): boolean;
+function AskUpdateNow(): TUserDecision;
 var
   AskForm: TAskForm;
 begin
@@ -61,6 +62,7 @@ begin
   self.btn_changelog.Caption:=LocalizeString('btn_info_changelog');
   self.memo_details.Visible:=false;
   _update_required:=false;
+  _show_changelist:=false;
   FillDetails();
 end;
 
@@ -82,6 +84,7 @@ const
 begin
   ShellExecute( Handle, 'open', url, nil, nil, SW_NORMAL );
   self._update_required:=false;
+  self._show_changelist:=true;
   self.Close();
 end;
 
@@ -98,9 +101,15 @@ begin
   end;
 end;
 
-function TAskForm.GetUserUpdateDecision(): boolean;
+function TAskForm.GetUserUpdateDecision(): TUserDecision;
 begin
-  result:=_update_required;
+    if _update_required then begin
+      result:=RUN_UPDATE;
+    end else if _show_changelist then begin
+      result:=DO_NOTHING;
+    end else begin
+      result:=RUN_GAME;
+    end;
 end;
 
 procedure TAskForm.FillDetails();
