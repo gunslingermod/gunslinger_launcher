@@ -42,6 +42,33 @@ begin
   end;
 end;
 
+procedure KillerProc(hgame:HANDLE);
+var
+  kill_key_pressed:boolean;
+  f4_state, ctrl_state:boolean;
+begin
+  kill_key_pressed:=false;
+  while(WaitForSingleObject(hgame, 0) = WAIT_TIMEOUT) do begin
+    f4_state:=GetAsyncKeyState(VK_F4) < 0;
+    if f4_state then begin
+      ctrl_state:=GetAsyncKeyState(VK_LCONTROL) < 0;
+      if ctrl_state then begin
+        if kill_key_pressed then begin
+          TerminateProcess(hgame, 1013);
+        end else begin
+          kill_key_pressed:=true;
+        end;
+      end else begin
+        kill_key_pressed:=false;
+      end;
+    end else begin
+      kill_key_pressed:=false;
+    end;
+
+    Sleep(1000);
+  end;
+end;
+
 procedure DoWork();
 var
   cfg:ConfigurationParams;
@@ -49,6 +76,8 @@ var
   run_mod_string:string;
   res:integer;
   decision:TUserDecision;
+
+  game_handle:HANDLE;
 
   pi:TPROCESSINFORMATION;
   si:TSTARTUPINFO;
@@ -59,6 +88,7 @@ const
   MOD_EXECUTABLE_PARAMS:string=' -no_staging';
   SILENT_KEY:string = 'silent';
   FAST_KEY:string = 'fast';
+  INVALID_GAME_PID:cardinal=$FFFFFFFF;
 begin
   run_updater_string:='';
   run_mod_string:='';
@@ -83,6 +113,7 @@ begin
     end;
   end;
 
+  game_handle:=INVALID_HANDLE_VALUE;
   if length(run_mod_string)>0 then begin
     run_mod_string:=run_mod_string+MOD_EXECUTABLE_PARAMS;
 
@@ -90,7 +121,7 @@ begin
     FillMemory(@pi, sizeof(pi),0);
     si.cb:=sizeof(si);
     CreateProcess(PAnsiChar(MOD_EXECUTABLE_DIR+MOD_EXECUTABLE_NAME), PAnsiChar(run_mod_string), nil, nil, false, 0, nil, nil, si, pi);
-    CloseHandle(pi.hProcess);
+    game_handle:=pi.hProcess;
     CloseHandle(pi.hThread);
   end;
 
@@ -101,6 +132,11 @@ begin
     CreateProcess(PAnsiChar(UPDATER_EXECUTABLE_NAME), PAnsiChar(run_updater_string), nil, nil, false, 0, nil, nil, si, pi);
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
+  end;
+
+  if game_handle<>INVALID_HANDLE_VALUE then begin
+    KillerProc(game_handle);
+    CloseHandle(game_handle);
   end;
 
 end;
